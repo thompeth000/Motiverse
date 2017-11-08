@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <title>Welcome to Motiverse!</title>
+        <script src="code.js" type="text/javascript" charset="utf-8"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+        <link href="style.css" rel="stylesheet" type="text/css">
+    </head>
+    <body>
+
+        <div id="signup">
+          <h1 class="text">Welcome to Motiverse!</h1>
+          <p class="text">Motivate yourself, earn points, and <br>level up!<br><br>Motiverse is a completely free <br>motivational tool that <br>allows you to set your own goals <br>and follow through with them.<br><br>New here? Just click this button!</p>
+          <a class= "text button" href="signup.html">Sign up</a>
+        </div>
+
+        <script>
+            var app = angular.module('login', []);
+            app.controller('loginControl', function($scope){
+                $scope.username = 'Username';
+                $scope.password = 'Password';
+            })
+        </script>
+
+        <div id="login" ng-app="login" ng-controller="loginControl">
+            <h1 class="login text">Log In</h1>
+            <h2 class="login text">Username</h2>
+            <h2 class="login text">Password</h2>
+            <form id="usernamepassword">
+                <input id="userinput" placeholder="Username" class=logininput ng-bind="logininput">
+                <br>
+                <input id="passinput" placeholder="Password" class="logininput" ng-bind="logininput">
+                <a id="LogonButton" class="button text" onclick="alert("aaaaaa")">Log in</a>
+                <script>
+                function login(user, pass){
+                  document.write("aaaaaaa");
+                  //alert(user + " " + pass);
+                }
+                </script>
+
+            </form>
+        </div>
+    </body>
+</html>
