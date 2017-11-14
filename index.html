@@ -21,24 +21,30 @@
                 $scope.username = 'Username';
                 $scope.password = 'Password';
             })
+
+
         </script>
 
         <div id="login" ng-app="login" ng-controller="loginControl">
             <h1 class="login text">Log In</h1>
             <h2 class="login text">Username</h2>
             <h2 class="login text">Password</h2>
-            <form id="usernamepassword">
+            <form id="usernamepassword" onsubmit="alert(user + " " + pass)">
                 <input id="userinput" placeholder="Username" class=logininput ng-bind="logininput">
                 <br>
-                <input id="passinput" placeholder="Password" class="logininput" ng-bind="logininput">
-                <a id="LogonButton" class="button text" onclick="alert("aaaaaa")">Log in</a>
+                <input id="passinput" type="password" placeholder="Password" class="logininput" ng-bind="logininput">
+                <button id="LogonButton" type="button" class="button text" onclick="login()">Log in</button>
                 <script>
-                function login(user, pass){
-                  document.write("aaaaaaa");
-                  //alert(user + " " + pass);
+                function login(){
+                  var username = document.forms['usernamepassword']['userinput'].value;
+                  var password = document.forms['usernamepassword']['passinput'].value;
+                  if(username == '' || password == ''){
+                    alert('Please enter both a valid username and password.');
+                  }
+                  else
+                  alert(username + password);
                 }
                 </script>
-
             </form>
         </div>
     </body>
