@@ -1,6 +1,6 @@
 {
   "name": "motiverse",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Motiverse",
   "main": "code.js",
   "scripts": {
@@ -12,6 +12,7 @@
   "dependencies": {
     "connect": "^3.6.5",
     "express": "^4.16.2",
+    "http": "0.0.0",
     "serve-static": "^1.13.1",
     "socket.io": "^2.0.4"
   }

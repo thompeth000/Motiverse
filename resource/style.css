@@ -1,0 +1,65 @@
+
+.text{
+    color: white;
+    font-family: Helvetica;
+    background-color: #03c03c;
+    text-align: right;
+    margin-right: 55px;
+    margin-left: 0px;
+    vertical-align: center;
+    text-decoration: none;
+}
+
+.login{
+    text-align: left;
+    margin-left: 10px;
+    margin-right: 3px;
+    vertical-align: top;
+    position: relative;
+    bottom: 252px;
+    width: 100px;
+
+}
+
+#LogonButton{
+   position: relative;
+   margin-left: 4px;
+   left: 0px;
+   bottom: 270px;
+   width: 80px;
+   border-color: #53d179;
+   border-
+   height: 30px;
+   font-size: 20px;
+  text-align: center;
+
+}
+
+
+
+.logininput{
+    position: relative;
+    bottom: 364px;
+    margin: 15px;
+    left: 115px;
+}
+
+p{
+    font-size: 16px;
+}
+
+body{
+        background-color: #03c03c;
+}
+
+.button{
+    background-color: #53d179;
+    width: 80px;
+    height: 30px;
+    font-size: 20px;
+    text-align: center;
+    position: absolute;
+    right: 60px;
+    margin-right: 0px;
+
+}

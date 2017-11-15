@@ -1,4 +1,11 @@
-const connect = require('connect');
-const serveStatic = require('serve-static');
-const io = require('socket.io');
-connect().use(serveStatic(__dirname)).listen(8000);
+var app = require('express')();
+var http = require('http').Server(app);
+
+app.use(express.static('resource'));
+app.get('/', function(req, res){
+  res.sendFile(__dirname + '/index.html');
+});
+
+http.listen(3000, function(){
+  console.log('listening on *:3000');
+});
