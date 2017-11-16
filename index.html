@@ -4,8 +4,11 @@
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
         <title>Welcome to Motiverse!</title>
         <script src="code.js" type="text/javascript" charset="utf-8"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
-		<script src="/socket.io/socket.io.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+		<script>
+		var socket = io('http://localhost:3000');
+		</script>
+		
         <link href="style.css" rel="stylesheet" type="text/css">
     </head>
     <body>
@@ -39,7 +42,7 @@
                 function login(){
                   var username = document.forms['usernamepassword']['userinput'].value;
                   var password = document.forms['usernamepassword']['passinput'].value;
-				  var socket = io.connect('http://localhost:8000');
+			
                   if(username == '' || password == ''){
                     alert('Please enter both a valid username and password.');
                   }
