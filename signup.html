@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Sign up</title>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+  var socket = io();
+
+  function submitUserInfo(){
+  var username = document.forms['signupform']['userinput'].value;
+  var password = document.forms['signupform']['passinput'].value;
+  var password2 = document.forms['signupform']['passinput2'].value;
+  var email = document.forms['signupform']['emailinput'].value;
+  
+  if(password === password2){
+  alert('Passwords match!');
+  }
+  else
+  alert('Did you make sure to confirm your password?');
+  }
+  
+  </script>
+</head>
+<body>
+<h1>Sign up for Motiverse!</h1>
+<div id="signup">
+  <form id="signupform">
+  <h2>Username</h2>
+  <input id="userinput" placeholder="Username">
+  <h2>E-Mail</h2>
+  <input id="emailinput" placeholder="E-Mail">
+  <h2>Password</h2>
+  <input id="passinput" type="password" placeholder="Password">
+  <h2>Confirm Password</h2>
+  <input id="passinput2" type="password" placeholder="Confirm Password">
+  <br>
+  <br>
+  <button id="submit" type="button" onclick="submitUserInfo()">Sign up</button>
+  
+  
+
+  </form>
+
+</body>
+
+</html>

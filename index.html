@@ -6,7 +6,7 @@
         <script src="code.js" type="text/javascript" charset="utf-8"></script>
         <script src="/socket.io/socket.io.js"></script>
 		<script>
-		var socket = io('http://localhost:3000');
+		var socket = io();
 		</script>
 		
         <link href="style.css" rel="stylesheet" type="text/css">
@@ -16,7 +16,7 @@
         <div id="signup">
           <h1 class="text">Welcome to Motiverse!</h1>
           <p class="text">Motivate yourself, earn points, and <br>level up!<br><br>Motiverse is a completely free <br>motivational tool that <br>allows you to set your own goals <br>and follow through with them.<br><br>New here? Just click this button!</p>
-          <a class= "text button" href="signup.html">Sign up</a>
+          <a class= "text button" href="/signup">Sign up</a>
         </div>
 
         <script>
@@ -47,7 +47,8 @@
                     alert('Please enter both a valid username and password.');
                   }
                   else
-                  alert(username + password);
+				  socket.emit('logon', {'user': username, 'pass': password});
+				  alert(username + password);
                 }
                 </script>
             </form>

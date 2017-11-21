@@ -8,8 +8,15 @@ app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });
 
+app.get('/signup', function(req, res){
+  res.sendFile(__dirname + '/signup.html');
+});
+
 io.on('connection', function(socket){
-  console.log('a user connected');
+  
+  socket.on('logon', function(usernamepassword){
+  console.log('Login attempt: ' + usernamepassword.user + ' ' + usernamepassword.pass);
+  });
 });
 
 http.listen(3000, function(){
