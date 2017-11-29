@@ -15,13 +15,14 @@
   var email = document.forms['signupform']['emailinput'].value;
   
   if(password === password2){
-  alert('Passwords match!');
+  socket.emit('signup', {'user': username, 'pass': password, 'mail': email});
   }
   else
   alert('Did you make sure to confirm your password?');
   }
   
   </script>
+  
 </head>
 <body>
 <h1>Sign up for Motiverse!</h1>
