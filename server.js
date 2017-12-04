@@ -35,20 +35,38 @@ app.get('/signup', function(req, res){
 io.on('connection', function(socket){
   
   socket.on('logon', function(usernamepassword){
-  console.log('Login attempt: ' + usernamepassword.user + ' ' + usernamepassword.pass);
-  });
   
-  socket.on('signup', function(userinfo){
-    admin.auth().createUser({
-      email: userinfo.mail,
-      password: userinfo.pass,
-      displayName: userinfo.username,
-      emailVerified: false,
-      disabled: false
-    })
-	console.log('Check Firebase to see if user was successfully created');
+    admin.auth().getUserByEmail(usernamepassword.user)
+	.then(function(userRecord){
+	console.log("Successfully fetched user data:", userRecord.toJSON());
+	  if(userRecord.password === usernamepassword.pass){
+        console.log("Login attempt successful!");
+	    console.log(userRecord.password);
+	    console.log(userRecord.uid);
+	    console.log(userRecord.displayName);
+		
+		admin.auth().createCustomToken(userRecord.uid)
+	      .then(function(authToken){
+		    res.send("User is now logged in as " + userRecord.displayName);
+		    socket.emit("userToken", authToken);
+		  });
+	    }
+	  });
+  
+    });
+	
+    socket.on('signup', function(userinfo){
+      admin.auth().createUser({
+        email: userinfo.mail,
+        password: userinfo.pass,
+        displayName: userinfo.username,
+        emailVerified: false,
+        disabled: false
+      })
+	  console.log('Check Firebase to see if user was successfully created');
+    });
   });
-});
+
 
 http.listen(3000, function(){
   console.log('listening on *:3000');

@@ -9,6 +9,22 @@
 		var socket = io();
 		</script>
 		
+		<script src="https://www.gstatic.com/firebasejs/4.6.2/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyBgUhVNvOdMJQOxRLfz-dLZ3Z3Tip8D0yQ",
+    authDomain: "motiverse-4490e.firebaseapp.com",
+    databaseURL: "https://motiverse-4490e.firebaseio.com",
+    projectId: "motiverse-4490e",
+    storageBucket: "motiverse-4490e.appspot.com",
+    messagingSenderId: "246464080899"
+  };
+  firebase.initializeApp(config);
+</script>
+    firebase.initializeApp(config);
+        </script>
+		
         <link href="style.css" rel="stylesheet" type="text/css">
     </head>
     <body>
@@ -31,10 +47,10 @@
 
         <div id="login" ng-app="login" ng-controller="loginControl">
             <h1 class="login text">Log In</h1>
-            <h2 class="login text">Username</h2>
+            <h2 class="login text">Email</h2>
             <h2 class="login text">Password</h2>
             <form id="usernamepassword" onsubmit="alert(user + " " + pass)">
-                <input id="userinput" placeholder="Username" class=logininput ng-bind="logininput">
+                <input id="userinput" placeholder="Email" class=logininput ng-bind="logininput">
                 <br>
                 <input id="passinput" type="password" placeholder="Password" class="logininput" ng-bind="logininput">
                 <button id="LogonButton" type="button" class="button text" onclick="login()">Log in</button>
@@ -48,6 +64,9 @@
                   }
                   else
 				  socket.emit('logon', {'user': username, 'pass': password});
+				  //socket.on('userToken' function(authToken){
+				  
+				  //});
 				  alert(username + password);
                 }
                 </script>
