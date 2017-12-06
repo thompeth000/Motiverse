@@ -3,6 +3,8 @@ const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 var mongo = require('mongodb');
+var passport = require('passport');
+var Strategy = require('passport-local').Strategy;
 var MongoClient = require('mongodb').MongoClient;
 var url = "mongodb://localhost:27017/mydb";
 
@@ -11,6 +13,17 @@ MongoClient.connect(url, function(err, db) {
   console.log("Database created!");
   db.close();
 });
+
+passport.use(new LocalStrategy(
+  function(username, password, done) {
+    User.findOne({ username: username }, function (err, user) {
+      if (err) { return done(err); }
+      if (!user) { return done(null, false); }
+      if (!user.verifyPassword(password)) { return done(null, false); }
+      return done(null, user);
+    });
+  }
+));
 
 
 //var serviceAccount = require("/motiverse-4490e-firebase-adminsdk-3zmsk-3c22d3d7ec.json");
