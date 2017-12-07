@@ -6,13 +6,23 @@ var mongo = require('mongodb');
 var passport = require('passport');
 var Strategy = require('passport-local').Strategy;
 var MongoClient = require('mongodb').MongoClient;
-var url = "mongodb://localhost:27017/mydb";
+var url = "mongodb://localhost:27017/users";
+var db;
 
-MongoClient.connect(url, function(err, db) {
-  if (err) throw err;
-  console.log("Database created!");
-  db.close();
+MongoClient.connect(url, function(err, database) {
+   assert.equal(null, err);
+  console.log("Connected correctly to server");
+  db = database
+ 
 });
+
+var addUser = function(user, pass, email, db, callback){
+
+  var collection = db.collection('documents');
+  
+  collection.insertOne({username: user, password: pass, email: email});
+
+  });
 
 passport.use(new LocalStrategy(
   function(username, password, done) {
@@ -37,6 +47,10 @@ app.get('/', function(req, res){
 
 app.get('/signup', function(req, res){
   res.sendFile(__dirname + '/signup.html');
+});
+
+app.post('/signup', function(req, res){
+
 });
 
 io.on('connection', function(socket){
@@ -65,16 +79,8 @@ io.on('connection', function(socket){
     });
 	
     socket.on('signup', function(userinfo){
-      /*admin.auth().createUser({
-        email: userinfo.mail,
-        password: userinfo.pass,
-        displayName: userinfo.username,
-        emailVerified: false,
-        disabled: false
-      })
-	  console.log('Check Firebase to see if user was successfully created');
-    });
-	*/
+      
+	  
   });
   });
 
