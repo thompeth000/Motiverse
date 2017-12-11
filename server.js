@@ -7,6 +7,8 @@ var passport = require('passport');
 var Strategy = require('passport-local').Strategy;
 var MongoClient = require('mongodb').MongoClient;
 var url = "mongodb://localhost:27017/users";
+var bcrypt = require('bcrypt');
+const saltRounds = 10;
 var db;
 
 MongoClient.connect(url, function(err, database) {
