@@ -7,24 +7,35 @@ var passport = require('passport');
 var Strategy = require('passport-local').Strategy;
 var MongoClient = require('mongodb').MongoClient;
 var url = "mongodb://localhost:27017/users";
-var bcrypt = require('bcrypt');
+var bcrypt = require('bcrypt');bcry
 const saltRounds = 10;
 var db;
 
 MongoClient.connect(url, function(err, database) {
-   assert.equal(null, err);
-  console.log("Connected correctly to server");
+  assert.equal(null, err);
+  console.log("Connected to internal MongoDB server");
   db = database
- 
 });
 
-var addUser = function(user, pass, email, db, callback){
+var addUser = function(user, passHash, email){
 
-  var collection = db.collection('documents');
+  var collection = db.collection('users');
+  var oldUser;
+  collection.findOne({username: user}, function(err, result){
+  if(err) throw err;
+  oldUser = result.username;
+  }
   
-  collection.insertOne({username: user, password: pass, email: email});
+  if(!(oldUser === user)){
+  collection.insertOne({username: user, password: passHash, email: email});
+  }
+  else{
+  
+  }
 
   });
+  
+  
 
 passport.use(new LocalStrategy(
   function(username, password, done) {
@@ -81,8 +92,9 @@ io.on('connection', function(socket){
     });
 	
     socket.on('signup', function(userinfo){
-      
-	  
+      var salt = bcrypt.genSaltSync(saltRounds);
+	  var hash = bcrypt.hashSync(userinfo.pass, salt);
+	  addUser(userinfo.user, hash, userinfo.mail);
   });
   });
 
