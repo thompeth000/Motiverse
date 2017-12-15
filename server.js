@@ -9,6 +9,9 @@ var MongoClient = require('mongodb').MongoClient;
 var assert = require('assert');
 var url = "mongodb://localhost:27017/users";
 var bcrypt = require('bcrypt');
+var async = require('async');
+var jsonParser = bodyParser.json()
+var urlencodedParser = bodyParser.urlencoded({ extended: false })
 const saltRounds = 10;
 var users;
 
@@ -63,8 +66,14 @@ app.get('/signup', function(req, res){
   res.sendFile(__dirname + '/signup.html');
 });
 
-app.post('/signup', function(req, res){
-
+app.post('/signup', urlencodedParser function(req, res){
+  if (!req.body) return res.sendStatus(400)
+  var uname = req.body.userinput;
+  var email = req.body.emailinput;
+  
+ MongoClient.connect(url, function(err, db){
+    
+ }
 });
 
 io.on('connection', function(socket){
