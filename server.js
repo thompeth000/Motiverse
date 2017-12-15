@@ -6,47 +6,48 @@ var mongo = require('mongodb');
 var passport = require('passport');
 var Strategy = require('passport-local').Strategy;
 var MongoClient = require('mongodb').MongoClient;
+var assert = require('assert');
 var url = "mongodb://localhost:27017/users";
-var bcrypt = require('bcrypt');bcry
+var bcrypt = require('bcrypt');
 const saltRounds = 10;
-var db;
+var users;
 
-MongoClient.connect(url, function(err, database) {
+MongoClient.connect(url, function(err, db) {
   assert.equal(null, err);
   console.log("Connected to internal MongoDB server");
-  db = database
+  users = db;
 });
 
 var addUser = function(user, passHash, email){
-
-  var collection = db.collection('users');
+  console.log(users);
+  var coll = users.collection('users');
   var oldUser;
-  collection.findOne({username: user}, function(err, result){
+  coll.findOne({username: user}, function(err, result){
   if(err) throw err;
   oldUser = result.username;
-  }
+  })
   
   if(!(oldUser === user)){
-  collection.insertOne({username: user, password: passHash, email: email});
+  coll.insertOne({username: user, password: passHash, email: email});
   }
   else{
   
   }
 
-  });
+  }
   
   
 
-passport.use(new LocalStrategy(
-  function(username, password, done) {
-    User.findOne({ username: username }, function (err, user) {
-      if (err) { return done(err); }
-      if (!user) { return done(null, false); }
-      if (!user.verifyPassword(password)) { return done(null, false); }
-      return done(null, user);
-    });
-  }
-));
+//passport.use(new LocalStrategy(
+  //function(username, password, done) {
+   // User.findOne({ username: username }, function (err, user) {
+     // if (err) { return done(err); }
+     // if (!user) { return done(null, false); }
+      //if (!user.verifyPassword(password)) { return done(null, false); }
+     // return done(null, user);
+   // });
+ // }
+// ));
 
 
 //var serviceAccount = require("/motiverse-4490e-firebase-adminsdk-3zmsk-3c22d3d7ec.json");
