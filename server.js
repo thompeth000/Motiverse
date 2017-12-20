@@ -21,6 +21,10 @@ MongoClient.connect(url, function(err, db) {
   users = db;
 });
 
+function createUser(uname, passHash, email){
+return new Promise
+}
+
 var addUser = function(user, passHash, email){
   console.log(users);
   var coll = users.collection('users');
@@ -70,11 +74,18 @@ app.post('/signup', urlencodedParser function(req, res){
   if (!req.body) return res.sendStatus(400)
   var uname = req.body.userinput;
   var email = req.body.emailinput;
-  
+  var salt = bcrypt.genSaltSync(saltRounds);
+  var hash = bcrypt.hashSync(req.body.passinput, salt);
  MongoClient.connect(url, function(err, db){
+   var coll = users.collection("users");
+   var oldU = coll.findOne({username: user}, function(err, result){
+    if(err) throw err;
+    return result.username;
+   });
     
  }
 });
+
 
 io.on('connection', function(socket){
   
