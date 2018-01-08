@@ -9,9 +9,11 @@ var MongoClient = require('mongodb').MongoClient;
 var assert = require('assert');
 var url = "mongodb://localhost:27017/users";
 var bcrypt = require('bcrypt');
-var async = require('async');
-var jsonParser = bodyParser.json()
-var urlencodedParser = bodyParser.urlencoded({ extended: false })
+var Server = require("mongo-sync").Server;
+var mServer = new Server('localhost:27017');
+
+//var jsonParser = bodyParser.json()
+//var urlencodedParser = bodyParser.urlencoded({ extended: false })
 const saltRounds = 10;
 var users;
 
@@ -23,6 +25,10 @@ MongoClient.connect(url, function(err, db) {
 
 function createUser(uname, passHash, email){
 return new Promise
+}
+
+function addPoints(pts, user){
+  
 }
 
 var addUser = function(user, passHash, email){
@@ -70,21 +76,24 @@ app.get('/signup', function(req, res){
   res.sendFile(__dirname + '/signup.html');
 });
 
-app.post('/signup', urlencodedParser function(req, res){
-  if (!req.body) return res.sendStatus(400)
-  var uname = req.body.userinput;
-  var email = req.body.emailinput;
-  var salt = bcrypt.genSaltSync(saltRounds);
-  var hash = bcrypt.hashSync(req.body.passinput, salt);
- MongoClient.connect(url, function(err, db){
-   var coll = users.collection("users");
-   var oldU = coll.findOne({username: user}, function(err, result){
-    if(err) throw err;
-    return result.username;
-   });
-    
- }
+app.get('/dashboard', function(req, res){
+  res.sendFile(__dirname + '/dash.html');
 });
+
+//app.post('/signup', function(req, res){
+  //if (!req.body) return res.sendStatus(400)
+  //var uname = req.body.userinput;
+  //var email = req.body.emailinput;
+  //var salt = bcrypt.genSaltSync(saltRounds);
+  //var hash = bcrypt.hashSync(req.body.passinput, salt);
+ //MongoClient.connect(url, function(err, db){
+   //var coll = users.collection("users");
+   //var oldU = coll.findOne({username: user}, function(err, result){
+   // if(err) throw err;
+   // return result.username;
+   //});
+  //});
+//});
 
 
 io.on('connection', function(socket){
@@ -116,8 +125,14 @@ io.on('connection', function(socket){
       var salt = bcrypt.genSaltSync(saltRounds);
 	  var hash = bcrypt.hashSync(userinfo.pass, salt);
 	  addUser(userinfo.user, hash, userinfo.mail);
+    });
+  
+    socket.on('pointtest', function(test){
+	addPoints(1);
+	}
   });
-  });
+  
+
 
 
 http.listen(3000, function(){
