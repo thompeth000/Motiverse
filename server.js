@@ -7,7 +7,7 @@ var passport = require('passport');
 var Strategy = require('passport-local').Strategy;
 var MongoClient = require('mongodb').MongoClient;
 var assert = require('assert');
-var url = "mongodb://localhost:27017/users";
+var mongoUrl = "mongodb://localhost:27017/users";
 var bcrypt = require('bcrypt');
 var Server = require("mongo-sync").Server;
 var mServer = new Server('localhost:27017');
@@ -17,10 +17,15 @@ var mServer = new Server('localhost:27017');
 const saltRounds = 10;
 var users;
 
-MongoClient.connect(url, function(err, db) {
+MongoClient.connect(mongoUrl, function(err, db) {
   assert.equal(null, err);
   console.log("Connected to internal MongoDB server");
-  users = db;
+  db.createCollection("users", function(err, res) {
+    if (err) throw err;
+    console.log("Collection created!");
+    db.close();
+  });
+  db.close();
 });
 
 function createUser(uname, passHash, email){
@@ -28,7 +33,7 @@ return new Promise
 }
 
 function addPoints(pts, user){
-  
+  mServer.db("users").getCollection("users").save
 }
 
 var addUser = function(user, passHash, email){
@@ -77,6 +82,7 @@ app.get('/signup', function(req, res){
 });
 
 app.get('/dashboard', function(req, res){
+  mServer.db('users').collection
   res.sendFile(__dirname + '/dash.html');
 });
 
@@ -127,11 +133,14 @@ io.on('connection', function(socket){
 	  addUser(userinfo.user, hash, userinfo.mail);
     });
   
-    socket.on('pointtest', function(test){
-	addPoints(1);
-	}
+    socket.on('ptsTest', function(test){
+	  MongoClient.connect(mongoUrl, function(err, db){
+	    db.collection("users").updateOne({name: "test"}, {points = test.pts}, function(err, res){
+		console.log("Point total updated to " + test.pts);
+	  });
+	});
   });
-  
+});
 
 
 

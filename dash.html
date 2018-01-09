@@ -5,10 +5,14 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <title>Dashboard</title>
     <script src="/socket.io/socket.io.js"></script>
+	<script>
+	  function testPoints(){
+	  socket.emit('ptsTest', {'points': 1});
+	  }
    </head>
    <h1>Welcome, User!</h1>
    <h2>Progress</h2>
    <h3>Points: </h3>
    <h2>Tasks</h2>
-   <a>Test Point System</a>
+   <a onClick="testPoints()>Test Point System</a>
 </html>
