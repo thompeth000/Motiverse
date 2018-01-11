@@ -1,32 +1,29 @@
+console.log('A');
 const express = require('express');
 const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 var mongo = require('mongodb');
+console.log('B');
 var passport = require('passport');
 var Strategy = require('passport-local').Strategy;
 var MongoClient = require('mongodb').MongoClient;
 var assert = require('assert');
+console.log('C');
 var mongoUrl = "mongodb://localhost:27017/users";
 var bcrypt = require('bcrypt');
+//var db = require('./config/db');
 var Server = require("mongo-sync").Server;
 var mServer = new Server('localhost:27017');
+console.log('D');
+
 
 //var jsonParser = bodyParser.json()
 //var urlencodedParser = bodyParser.urlencoded({ extended: false })
 const saltRounds = 10;
 var users;
 
-MongoClient.connect(mongoUrl, function(err, db) {
-  assert.equal(null, err);
-  console.log("Connected to internal MongoDB server");
-  db.createCollection("users", function(err, res) {
-    if (err) throw err;
-    console.log("Collection created!");
-    db.close();
-  });
-  db.close();
-});
+
 
 function createUser(uname, passHash, email){
 return new Promise
@@ -37,22 +34,9 @@ function addPoints(pts, user){
 }
 
 var addUser = function(user, passHash, email){
-  console.log(users);
-  var coll = users.collection('users');
-  var oldUser;
-  coll.findOne({username: user}, function(err, result){
-  if(err) throw err;
-  oldUser = result.username;
-  })
   
-  if(!(oldUser === user)){
-  coll.insertOne({username: user, password: passHash, email: email});
-  }
-  else{
+  };
   
-  }
-
-  }
   
   
 
@@ -82,8 +66,14 @@ app.get('/signup', function(req, res){
 });
 
 app.get('/dashboard', function(req, res){
-  mServer.db('users').collection
+  //mServer.db('users').collection
   res.sendFile(__dirname + '/dash.html');
+});
+
+app.post('/dashboard', function(req, res){
+console.log("Adding points...");
+addPoints(1);
+res.sendFile(__dirname + '/dash.html');
 });
 
 //app.post('/signup', function(req, res){
@@ -106,24 +96,6 @@ io.on('connection', function(socket){
   
   socket.on('logon', function(usernamepassword){
   
-    /*admin.auth().getUserByEmail(usernamepassword.user)
-	.then(function(userRecord){
-	console.log("Successfully fetched user data:", userRecord.toJSON());
-	  if(userRecord.password === usernamepassword.pass){
-        console.log("Login attempt successful!");
-	    console.log(userRecord.password);
-	    console.log(userRecord.uid);
-	    console.log(userRecord.displayName);
-		
-		admin.auth().createCustomToken(userRecord.uid)
-	      .then(function(authToken){
-		    res.send("User is now logged in as " + userRecord.displayName);
-		    socket.emit("userToken", authToken);
-		  });
-	    }
-		
-	  });
-	  */
   
     });
 	
@@ -134,13 +106,13 @@ io.on('connection', function(socket){
     });
   
     socket.on('ptsTest', function(test){
-	  MongoClient.connect(mongoUrl, function(err, db){
-	    db.collection("users").updateOne({name: "test"}, {points = test.pts}, function(err, res){
+	    
+	    mServer.db("users").collection("users").find({name:"test"}).update({points: test.pts});
 		console.log("Point total updated to " + test.pts);
-	  });
+	 
 	});
   });
-});
+
 
 
 
