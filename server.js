@@ -44,18 +44,13 @@ var newUser = new User;
 }
 
 function addPoints(pts, username){
-  MotiverseUser.findOne({name: username}, function(err, user){
+  MotiverseUser.findOneAndUpdate({name: username}, {$inc: {score: pts}}, function(err, user){
     if (err) return handleError(err);
 	console.log(typeof user);
 	console.log(user);
-    console.log('Prev. points: ' + pts);
 	var p = user.score;
-	user.set({score: p + pts});
-	console.log('New Points' + p);
-	user.save(function(err, newUser){
-	  if (err) return handleError(err);
-      res.send(newUser);
-	});
+	console.log('New Points: ' + p);
+	
   });
 }
 
