@@ -3,39 +3,69 @@ const express = require('express');
 const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
-var mongo = require('mongodb');
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema, ObjectId = Schema.ObjectId;
 console.log('B');
 var passport = require('passport');
 var Strategy = require('passport-local').Strategy;
-var MongoClient = require('mongodb').MongoClient;
 var assert = require('assert');
 console.log('C');
 var mongoUrl = "mongodb://localhost:27017/users";
 var bcrypt = require('bcrypt');
 //var db = require('./config/db');
-var Server = require("mongo-sync").Server;
-var mServer = new Server('localhost:27017');
+//var Server = require("mongo-sync").Server;
+//var mServer = new Server('localhost:27017');
 console.log('D');
+mongoose.connect(mongoUrl);
+var motiverseUser = new Schema({
+name: String,
+email: String,
+passwordHash: String,
+score: Number,
+uid: Number
+});
 
-
+var motiverseTask = new Schema({
+title: String,
+pointVal: Number,
+due: Date,
+taskID: Number
+});
 //var jsonParser = bodyParser.json()
 //var urlencodedParser = bodyParser.urlencoded({ extended: false })
 const saltRounds = 10;
-var users;
+var MotiverseUser = mongoose.model('User', motiverseUser);
 
 
 
 function createUser(uname, passHash, email){
-return new Promise
+var newUser = new User;
+//newUser.set(name: uName, passHash: passHash, email: email);
 }
 
-function addPoints(pts, user){
-  mServer.db("users").getCollection("users").save
+function addPoints(pts, username){
+  MotiverseUser.findOne({name: username}, function(err, user){
+    if (err) return handleError(err);
+	console.log(typeof user);
+	console.log(user);
+    console.log('Prev. points: ' + pts);
+	var p = user.score;
+	user.set({score: p + pts});
+	console.log('New Points' + p);
+	user.save(function(err, newUser){
+	  if (err) return handleError(err);
+      res.send(newUser);
+	});
+  });
 }
 
-var addUser = function(user, passHash, email){
-  
-  };
+var addUser = function(user, passHash, mail){
+  var newUser = new MotiverseUser({name: 'testUser', email: mail, passwordHash: passHash, score: 0, uid: 0});
+  newUser.save(function(err){
+    if(err)
+      return handleError(err);
+  });
+ };
   
   
   
@@ -72,7 +102,7 @@ app.get('/dashboard', function(req, res){
 
 app.post('/dashboard', function(req, res){
 console.log("Adding points...");
-addPoints(1);
+addPoints(1, 'testUser');
 res.sendFile(__dirname + '/dash.html');
 });
 
@@ -107,8 +137,8 @@ io.on('connection', function(socket){
   
     socket.on('ptsTest', function(test){
 	    
-	    mServer.db("users").collection("users").find({name:"test"}).update({points: test.pts});
-		console.log("Point total updated to " + test.pts);
+	    //mServer.db("users").collection("users").find({name:"test"}).update({points: test.pts});
+		//console.log("Point total updated to " + test.pts);
 	 
 	});
   });
