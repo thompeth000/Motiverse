@@ -1,0 +1,26 @@
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>Add a New Task</title>
+    <script src="/socket.io/socket.io.js"></script>
+	<script>
+	var socket = io();
+	function submitTask(){
+	
+	}
+	</script>
+  </head>
+  <body>
+    <div id = "addTask">
+	  <form id = "test">
+	    <h1>Task Name</h1>
+		<input id = "taskName">
+		<h1>Point Value</h1>
+		<input id = "pointVal">
+		</br>
+		</br>
+		<button id = "submit" onclick = "submitTask()">Submit Task</button>
+	  </form>
+	</div>
+  </body>
+</html>

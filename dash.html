@@ -6,18 +6,47 @@
     <title>Dashboard</title>
     <script src="/socket.io/socket.io.js"></script>
 	<script>
+	var socket = io();
+	
 	  function testPoints(){
-	  socket.emit('ptsTest', {'points': 1});
+	    console.log('Doing stuff...');
+	    socket.emit('ptsTest', {'points': 1});
+		refreshUserData();
+	   }
+	  
+	  function refreshUserData(){
+	   socket.emit('userQuery', {'username': 'testUser'});
+	   socket.on('getUser', function(data){
+	     document.getElementById('points').innerHTML = ('Points: ' + data.pts);
+	   });
 	  }
+	  
+	  function execTask(id){
+	  socket.emit('completeTask', {'taskID': id});
+	  refreshUserData();
+	  }
+	  
+	 refreshUserData();
+	   
+	  
 	</script>
    </head>
    <body>
-     <h1>Welcome, User!</h1>
-     <h2>Progress</h2>
-     <h3>Points: </h3>
-     <h2>Tasks</h2>
-	 <form action="/dashboard" method="post">
-       <input type="submit">Test Point System</input>
-	 </form>
-   </body>
+   <div id="dashMain">
+       <h1>Welcome, User!</h1>
+       <h2>Progress</h2>
+       <h3 id="points">Points: </h3>
+       <h2>Tasks</h2>
+	   <form id = "tasks">
+	     <input type="button" id = "task1" onclick = "execTask(0)">Task 1</a>
+		 <input type="button" id = "task2" onclick = "execTask(1)">Task 2</a>
+		 <input type="button" id = "task3" onclick = "execTask(2)">Task 3</a>
+		 <input type="button" id = "task4" onclick = "execTask(3)">Task 4</a>
+	   </form>
+	   <a href = "/addtask"> Add Task</a>
+	   <form id="ptsTest">
+         <input type="button" onclick="testPoints()">Test Point System</input>
+	   </form>
+     </body>
+   </div>
 </html>

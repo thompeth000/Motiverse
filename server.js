@@ -17,23 +17,27 @@ var bcrypt = require('bcrypt');
 //var mServer = new Server('localhost:27017');
 console.log('D');
 mongoose.connect(mongoUrl);
-var motiverseUser = new Schema({
-name: String,
-email: String,
-passwordHash: String,
-score: Number,
-uid: Number
-});
+
 
 var motiverseTask = new Schema({
 title: String,
-pointVal: Number,
+val: Number,
 due: Date,
 taskID: Number
 });
 //var jsonParser = bodyParser.json()
 //var urlencodedParser = bodyParser.urlencoded({ extended: false })
+var MotiverseTask = mongoose.model('Task', motiverseTask);
+
 const saltRounds = 10;
+var motiverseUser = new Schema({
+name: String,
+email: String,
+passwordHash: String,
+score: Number,
+uid: Number,
+tasks: [MotiverseTask]
+});
 var MotiverseUser = mongoose.model('User', motiverseUser);
 
 
@@ -43,15 +47,31 @@ var newUser = new User;
 //newUser.set(name: uName, passHash: passHash, email: email);
 }
 
-function addPoints(pts, username){
+function addPoints(pts, username, callback){
   MotiverseUser.findOneAndUpdate({name: username}, {$inc: {score: pts}}, function(err, user){
     if (err) return handleError(err);
 	console.log(typeof user);
 	console.log(user);
-	var p = user.score;
-	console.log('New Points: ' + p);
-	
+	pt = user.score;
+	console.log('New Points: ' + pt);
+	callback(pt);
   });
+  
+}
+
+function queryUser(query, callback){
+MotiverseUser.findOne({name: query.username}, function(err, user){
+callback(user);
+});
+}
+
+function newTask(data, callback){
+var newTask = new MotiverseTask({title: data.title, val = data.val});
+  newTask.save(function(err){
+    if(err)
+      return handleError(err);
+  });
+  callback();
 }
 
 var addUser = function(user, passHash, mail){
@@ -91,8 +111,11 @@ app.get('/signup', function(req, res){
 });
 
 app.get('/dashboard', function(req, res){
-  //mServer.db('users').collection
   res.sendFile(__dirname + '/dash.html');
+});
+
+app.get('/addtask', function(req, res){
+  res.sendFile(__dirname + '/addTask.html');
 });
 
 app.post('/dashboard', function(req, res){
@@ -130,11 +153,21 @@ io.on('connection', function(socket){
 	  addUser(userinfo.user, hash, userinfo.mail);
     });
   
-    socket.on('ptsTest', function(test){
-	    
-	    //mServer.db("users").collection("users").find({name:"test"}).update({points: test.pts});
-		//console.log("Point total updated to " + test.pts);
+    socket.on('ptsTest', function(test){ 
+	   console.log("Doing points and stuff");
+       addPoints(1, 'testUser', function(res){
+	 });
 	 
+	socket.on('userQuery', function(query){
+	  queryUser(query, function(res){
+	  socket.emit('getUser', {'pts': res.score});
+	   });
+	  });
+	  
+	  socket.on('newTask', function(data){
+	    newTask(data, function(res){
+		});
+	  });
 	});
   });
 
