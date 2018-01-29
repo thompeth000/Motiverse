@@ -7,8 +7,15 @@
 	var socket = io();
 	var tasks = [MotiverseTask];
 	function searchTasks(){
-	socket.emit('taskQuery');
-	}
+	  socket.emit('taskQuery');
+	  socket.on('taskQueryRes', function(data){
+	    refreshTaskList(data.tasks);
+	  });
+	 }
+	 
+	 function refreshTaskList(taskList){
+	 
+	 }
 	</script>
   </head>
   <body>
