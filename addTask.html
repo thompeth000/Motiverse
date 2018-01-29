@@ -6,7 +6,10 @@
 	<script>
 	var socket = io();
 	function submitTask(){
-	
+	    var task = document.forms['test']['taskName'].value;
+		var pointVal = document.forms['test']['pointVal'].value;
+		socket.emit('newTask', {'title': task, 'val': pointVal});
+		console.log('Task submitted');
 	}
 	</script>
   </head>

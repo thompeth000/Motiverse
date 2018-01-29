@@ -29,6 +29,9 @@ taskID: Number
 //var urlencodedParser = bodyParser.urlencoded({ extended: false })
 var MotiverseTask = mongoose.model('Task', motiverseTask);
 
+console.log('E');
+
+
 const saltRounds = 10;
 var motiverseUser = new Schema({
 name: String,
@@ -36,8 +39,11 @@ email: String,
 passwordHash: String,
 score: Number,
 uid: Number,
-tasks: [MotiverseTask]
+tasks: [motiverseTask]
 });
+
+console.log('F');
+
 var MotiverseUser = mongoose.model('User', motiverseUser);
 
 
@@ -66,12 +72,12 @@ callback(user);
 }
 
 function newTask(data, callback){
-var newTask = new MotiverseTask({title: data.title, val = data.val});
+var newTask = new MotiverseTask({title: data.title, val: data.val});
   newTask.save(function(err){
     if(err)
       return handleError(err);
   });
-  callback();
+  callback(newTask);
 }
 
 var addUser = function(user, passHash, mail){
@@ -157,6 +163,7 @@ io.on('connection', function(socket){
 	   console.log("Doing points and stuff");
        addPoints(1, 'testUser', function(res){
 	 });
+    });
 	 
 	socket.on('userQuery', function(query){
 	  queryUser(query, function(res){
@@ -166,9 +173,10 @@ io.on('connection', function(socket){
 	  
 	  socket.on('newTask', function(data){
 	    newTask(data, function(res){
+		console.log('Added Task!: ' + res);
 		});
 	  });
-	});
+	
   });
 
 
