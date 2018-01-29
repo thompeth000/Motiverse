@@ -2,8 +2,18 @@
 
 <html>
   <head>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+	var socket = io();
+	var tasks = [MotiverseTask];
+	function searchTasks(){
+	socket.emit('taskQuery');
+	}
+	</script>
   </head>
   <body>
     <h1>Select Task...</h>
+	
+	
   </body>
 </html>
