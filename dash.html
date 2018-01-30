@@ -4,6 +4,34 @@
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <title>Dashboard</title>
+	<style>
+  #signup{
+    margin: auto;
+}
+
+
+  .text{
+    color: white;
+    font-family: Helvetica;
+    background-color: #03c03c;
+    text-decoration: none;
+}
+
+#pointTest{
+    background-color: #53d179;
+	border-color: #53d179;
+    width: 100px;
+    height: 30px;
+    font-size: 20px;
+    text-align: center;
+	margin: auto;
+	
+}
+
+body{
+    background-color: #03c03c;
+}
+  </style>
     <script src="/socket.io/socket.io.js"></script>
 	<script>
 	var socket = io();
@@ -33,10 +61,10 @@
    </head>
    <body>
    <div id="dashMain">
-       <h1>Welcome, User!</h1>
-       <h2>Progress</h2>
-       <h3 id="points">Points: </h3>
-       <h2>Tasks</h2>
+       <h1 class="text">Welcome, User!</h1>
+       <h2 class="text">Progress</h2>
+       <h3 id="points" class="text">Points: </h3>
+       <h2 class="text">Tasks</h2>
 	   <form id = "tasks">
 	     <input type="button" id = "task1" onclick = "execTask(0)">Task 1</a>
 		 <input type="button" id = "task2" onclick = "execTask(1)">Task 2</a>
@@ -45,7 +73,7 @@
 	   </form>
 	   <a href = "/addtask"> Add Task</a>
 	   <form id="ptsTest">
-         <input type="button" onclick="testPoints()">Test Point System</input>
+         <button id="pointTest" class="text" onclick="testPoints()">Test</button>
 	   </form>
      </body>
    </div>

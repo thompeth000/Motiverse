@@ -2,6 +2,31 @@
   <head>
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <title>Add a New Task</title>
+	<style>#signup{
+    margin: auto;
+}
+
+  .text{
+    color: white;
+    font-family: Helvetica;
+    background-color: #03c03c;
+    text-decoration: none;
+}
+
+#submit{
+    background-color: #53d179;
+	border-color: #53d179;
+    width: 100px;
+    height: 30px;
+    font-size: 20px;
+    text-align: center;
+	margin: auto;
+	
+}
+body{
+    background-color: #03c03c;
+}
+</style>
     <script src="/socket.io/socket.io.js"></script>
 	<script>
 	var socket = io();
@@ -16,13 +41,13 @@
   <body>
     <div id = "addTask">
 	  <form id = "test">
-	    <h1>Task Name</h1>
+	    <h1 class="text">Task Name</h1>
 		<input id = "taskName">
-		<h1>Point Value</h1>
+		<h1 class="text">Point Value</h1>
 		<input id = "pointVal">
 		</br>
 		</br>
-		<button id = "submit" onclick = "submitTask()">Submit Task</button>
+		<button class="text" id = "submit" onclick = "submitTask()">Submit</button>
 	  </form>
 	</div>
   </body>
