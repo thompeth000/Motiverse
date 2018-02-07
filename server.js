@@ -34,7 +34,7 @@ console.log('E');
 
 const saltRounds = 10;
 var motiverseUser = new Schema({
-name: String,
+name: {type: String, text: true},
 email: String,
 passwordHash: String,
 score: Number,
@@ -124,6 +124,10 @@ app.get('/addtask', function(req, res){
   res.sendFile(__dirname + '/addTask.html');
 });
 
+app.get('/taskSelect', function(req, res){
+  res.sendFile(__dirname + '/selectTask.html');
+});
+
 app.post('/dashboard', function(req, res){
 console.log("Adding points...");
 addPoints(1, 'testUser');
@@ -144,6 +148,19 @@ res.sendFile(__dirname + '/dash.html');
    //});
   //});
 //});
+
+function findTasks(s, callback){
+  var taskList = new Array();
+  var i = 0;
+  var cursor = MotiverseTask.find({title: {$regex: /t/, $options: 'i'}}).cursor();
+  cursor.on('data', function(doc){
+    taskList[i] = doc;
+	i++;
+  });
+  cursor.on('close', function(doc){
+    callback(taskList);
+  });
+}
 
 
 io.on('connection', function(socket){
@@ -176,6 +193,16 @@ io.on('connection', function(socket){
 		console.log('Added Task!: ' + res);
 		});
 	  });
+	  
+	socket.on('taskQuery', function(searchQuery){
+	  console.log('Searching task database...');
+	  findTasks(searchQuery.search, function(res){
+	    for(i = 0; i < res.length; i++){
+		  console.log(res[i]);
+		}
+	    socket.emit('taskQueryRes', {'tasks': res});
+	  });
+	});
 	
   });
 

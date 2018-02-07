@@ -5,22 +5,32 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
 	var socket = io();
-	var tasks = [MotiverseTask];
+	var tasks = new Array();
 	function searchTasks(){
-	  socket.emit('taskQuery');
+	  socket.emit('taskQuery', {'search': document.forms['taskSearch']['searchBox'].value});
 	  socket.on('taskQueryRes', function(data){
 	    refreshTaskList(data.tasks);
 	  });
 	 }
 	 
 	 function refreshTaskList(taskList){
-	 
+	 for(i = 0; i < taskList.length; i++){
+	   renderList(taskList[i]);
 	 }
+	}
 	</script>
   </head>
   <body>
     <h1>Select Task...</h>
-	
+	  <form id="taskSearch">
+	    <input id="searchBox">
+		<button id="submit" onclick="searchTasks()">Search</button>
+	  </form>
+	  <script>
+	    function renderList(task){
+		document.write(task.name);
+		}
+	  </script>
 	
   </body>
 </html>
