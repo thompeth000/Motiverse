@@ -152,7 +152,7 @@ res.sendFile(__dirname + '/dash.html');
 function findTasks(s, callback){
   var taskList = new Array();
   var i = 0;
-  var cursor = MotiverseTask.find({title: {$regex: /t/, $options: 'i'}}).cursor();
+  var cursor = MotiverseTask.find({title: {$regex: s, $options: 'i'}}).cursor();
   cursor.on('data', function(doc){
     taskList[i] = doc;
 	i++;
