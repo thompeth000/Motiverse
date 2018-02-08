@@ -2,6 +2,34 @@
 
 <html>
   <head>
+  <style>
+  #signup{
+    margin: auto;
+}
+
+
+  .text{
+    color: white;
+    font-family: Helvetica;
+    background-color: #03c03c;
+    text-decoration: none;
+}
+
+#submit{
+    background-color: #53d179;
+	border-color: #53d179;
+    width: 100px;
+    height: 30px;
+    font-size: 20px;
+    text-align: center;
+	margin: auto;
+	
+}
+
+body{
+    background-color: #03c03c;
+}
+  </style>
     <script src="/socket.io/socket.io.js"></script>
     <script>
 	var socket = io();
@@ -14,21 +42,33 @@
 	 }
 	 
 	 function refreshTaskList(taskList){
-	 for(i = 0; i < taskList.length; i++){
-	   renderList(taskList[i]);
+	 document.write('<h1>Search Results</h1>');
+	 if(taskList.length === 0){
+	   document.write('<p>No tasks found...</p>');
 	 }
+	 else{
+	   for(i = 0; i < taskList.length; i++){
+	     console.log('Displaying task...');
+	     renderList(taskList[i]);
+	   }
+	 }
+	 document.write('<a href="/taskSelect">Back...</a>');
 	}
 	</script>
   </head>
   <body>
-    <h1>Select Task...</h>
+    <h1 class="text">Select Task...</h1>
+	  <a href="/dash">Back to Dashboard...</a>
 	  <form id="taskSearch">
 	    <input id="searchBox">
-		<button id="submit" onclick="searchTasks()">Search</button>
+		<button id="submit" onclick="searchTasks()" class="text">Search</button>
 	  </form>
+	  <h3 class="text">Here, you can select and add any task you wish to complete to your account. You may only have four tasks active at a time, so choose wisely!</h3>
 	  <script>
 	    function renderList(task){
-		document.write(task.name);
+		document.write('<button class="taskButton" onclick="requestTask(' + task.id + ')">' + task.title + '</button>');
+		document.write(task.val + ' pts');
+		document.write('</br>');
 		}
 	  </script>
 	

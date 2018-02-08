@@ -196,6 +196,9 @@ io.on('connection', function(socket){
 	  
 	socket.on('taskQuery', function(searchQuery){
 	  console.log('Searching task database...');
+	  if(searchQuery.search === ''){
+	    searchQuery.search ='UNDEFINED SEARCH';
+	  }
 	  findTasks(searchQuery.search, function(res){
 	    for(i = 0; i < res.length; i++){
 		  console.log(res[i]);
