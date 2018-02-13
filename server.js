@@ -80,6 +80,19 @@ var newTask = new MotiverseTask({title: data.title, val: data.val});
   callback(newTask);
 }
 
+function addTaskToUser(taskID, userID, callback){
+var task;
+findTask(taskID, function(res){
+    task = res;
+});
+MotiverseUser.findOne({name: 'test'}, function(err, res){
+ res.tasks.add(task);
+});
+}
+
+function getUserID(token){
+}
+
 var addUser = function(user, passHash, mail){
   var newUser = new MotiverseUser({name: 'testUser', email: mail, passwordHash: passHash, score: 0, uid: 0});
   newUser.save(function(err){
@@ -162,6 +175,12 @@ function findTasks(s, callback){
   });
 }
 
+function findTask(taskID, callback){
+  MotiverseTask.findOne(id: taskID, function(err, q){
+    callback(q);
+  });
+}
+
 
 io.on('connection', function(socket){
   
@@ -169,6 +188,10 @@ io.on('connection', function(socket){
   
   
     });
+	
+	socket.on('addTask'), function(d){
+	
+	});
 	
     socket.on('signup', function(userinfo){
       var salt = bcrypt.genSaltSync(saltRounds);

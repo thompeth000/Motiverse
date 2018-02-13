@@ -54,6 +54,13 @@ body{
 	 }
 	 document.write('<a href="/taskSelect">Back...</a>');
 	}
+	
+	function requestTask(taskID){
+	  socket.emit('addTask', {'task': taskID});
+	  socket.on('feedback', function(data){
+	    console.log(data.message);
+	  });
+	}
 	</script>
   </head>
   <body>
