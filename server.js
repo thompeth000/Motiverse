@@ -84,10 +84,12 @@ function addTaskToUser(taskID, userID, callback){
 var task;
 findTask(taskID, function(res){
     task = res;
+	console.log('found task!');
+	console.log(task);
 });
-MotiverseUser.findOne({name: 'test'}, function(err, res){
- res.tasks.add(task);
-});
+//MotiverseUser.findOne({name: 'test'}, function(err, res){
+// res.tasks.add(task);
+//});
 }
 
 function getUserID(token){
@@ -176,7 +178,7 @@ function findTasks(s, callback){
 }
 
 function findTask(taskID, callback){
-  MotiverseTask.findOne(id: taskID, function(err, q){
+  MotiverseTask.findOne({id: taskID}, function(err, q){
     callback(q);
   });
 }
@@ -189,8 +191,8 @@ io.on('connection', function(socket){
   
     });
 	
-	socket.on('addTask'), function(d){
-	
+	socket.on('addTask', function(d){
+	console.log(d.task);
 	});
 	
     socket.on('signup', function(userinfo){

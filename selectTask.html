@@ -73,7 +73,7 @@ body{
 	  <h3 class="text">Here, you can select and add any task you wish to complete to your account. You may only have four tasks active at a time, so choose wisely!</h3>
 	  <script>
 	    function renderList(task){
-		document.write('<button class="taskButton" onclick="requestTask(' + task.id + ')">' + task.title + '</button>');
+		document.write('<button class="taskButton" onclick="requestTask(' + task._id + ')">' + task.title + '</button>');
 		document.write(task.val + ' pts');
 		document.write('</br>');
 		}
