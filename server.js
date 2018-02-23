@@ -39,7 +39,8 @@ email: String,
 passwordHash: String,
 score: Number,
 uid: Number,
-tasks: [motiverseTask]
+tasks: [motiverseTask],
+taskCount: Number
 });
 
 console.log('F');
@@ -82,14 +83,28 @@ var newTask = new MotiverseTask({title: data.title, val: data.val});
 
 function addTaskToUser(taskID, userID, callback){
 var task;
+var message;
 findTask(taskID, function(res){
     task = res;
 	console.log('found task!');
 	console.log(task);
 });
-//MotiverseUser.findOne({name: 'test'}, function(err, res){
-// res.tasks.add(task);
-//});
+  if(!(typeof task === 'undefined')){
+    MotiverseUser.findOne({name: 'test'}, function(err, res){
+     if(res.taskCount < 4){
+       res.tasks.add(task);
+       res.taskCount++;
+       message = 'Task added successfully!';
+     }
+     else{
+       message = 'You have too many tasks. Try completing or removing one to add ' + task.name + '.';
+     }
+    });
+  }
+  else{
+    message = 'Invalid task ID!';
+  }
+  callback(message);
 }
 
 function getUserID(token){
@@ -178,7 +193,7 @@ function findTasks(s, callback){
 }
 
 function findTask(taskID, callback){
-  MotiverseTask.findOne({id: taskID}, function(err, q){
+  MotiverseTask.findOne({id_: taskID}, function(err, q){
     callback(q);
   });
 }
@@ -191,7 +206,10 @@ io.on('connection', function(socket){
   
     });
 	
-	socket.on('addTask', function(d){
+	socket.on('reqTask', function(d){
+	addTaskToUser(d.taskID, 0, function(res){
+	 socket.emit('feedback', res);
+	});
 	console.log(d.task);
 	});
 	
@@ -209,7 +227,7 @@ io.on('connection', function(socket){
 	 
 	socket.on('userQuery', function(query){
 	  queryUser(query, function(res){
-	  socket.emit('getUser', {'pts': res.score});
+	  socket.emit('getUser', {'name': res.name, 'pts': res.score, 'tasks': res.tasks});
 	   });
 	  });
 	  
@@ -222,7 +240,7 @@ io.on('connection', function(socket){
 	socket.on('taskQuery', function(searchQuery){
 	  console.log('Searching task database...');
 	  if(searchQuery.search === ''){
-	    searchQuery.search ='UNDEFINED SEARCH';
+	    searchQuery.search ='UNDEFINED SEARCH QUERY';
 	  }
 	  findTasks(searchQuery.search, function(res){
 	    for(i = 0; i < res.length; i++){
