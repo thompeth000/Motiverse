@@ -48,6 +48,7 @@ body{
 	 }
 	 
 	 function refreshTaskList(taskList, user){
+	 document.write('<!DOCTYPE html> <html> <head> <script src="/socket.io/socket.io.js"></script> </head> <body> <div id="searchResults">');
 	 document.write('<h1>Search Results</h1>');
 	 if(taskList.length === 0){
 	   document.write('<p>No tasks found...</p>');
@@ -59,7 +60,11 @@ body{
 	   }
 	 }
 	 document.write('<a href="/taskSelect">Back...</a>');
+	 document.write('<script>' + 'var socket = io(); ' + requestTask.toString() +'</script>');
+	 document.write('</div> </body> </html>');
+	 
 	}
+	
 	
 	function requestTask(taskID, user){
 	  socket.emit('reqTask', {'task': taskID, 'user': user});
@@ -89,10 +94,10 @@ body{
 		}
 		
 		 function isTaskSelected(task, user){
-		   for(i = 0; i < user.tasks.length; i++){
+		 /*  for(i = 0; i < user.tasks.length; i++){
 		    if(task._id === user.tasks[i]._id)
 			  return true;
-		   }
+		   } */
 		   console.log('Adding task to search results');
 		   return false;
 		 }

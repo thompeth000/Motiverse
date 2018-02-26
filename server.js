@@ -207,6 +207,7 @@ io.on('connection', function(socket){
     });
 	
 	socket.on('reqTask', function(d){
+	console.log('Adding task to user...');
 	addTaskToUser(d.taskID, 0, function(res){
 	 socket.emit('feedback', res);
 	});
