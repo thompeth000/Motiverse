@@ -1,0 +1,26 @@
+#signup{
+    margin: auto;
+}
+
+
+.text{
+    color: white;
+    font-family: Helvetica;
+    background-color: #03c03c;
+    text-decoration: none;
+}
+
+#pointTest{
+    background-color: #53d179;
+	border-color: #53d179;
+    width: 100px;
+    height: 30px;
+    font-size: 20px;
+    text-align: center;
+	margin: auto;
+	
+}
+
+body{
+    background-color: #03c03c;
+}

@@ -2,106 +2,17 @@
 
 <html>
   <head>
-  <style>
-  #signup{
-    margin: auto;
-}
-
-
-  .text{
-    color: white;
-    font-family: Helvetica;
-    background-color: #03c03c;
-    text-decoration: none;
-}
-
-#submit{
-    background-color: #53d179;
-	border-color: #53d179;
-    width: 100px;
-    height: 30px;
-    font-size: 20px;
-    text-align: center;
-	margin: auto;
-	
-}
-
-body{
-    background-color: #03c03c;
-}
-  </style>
+    <link href="search.css" rel="stylesheet" type="text/css">
     <script src="/socket.io/socket.io.js"></script>
-    <script>
-	var socket = io();
-	var tasks = new Array();
-	function searchTasks(){
-	  var user;
-	  socket.emit('userQuery', {'username': 'testUser'});
-	  socket.on('getUser', function(data){
-	    user = data;
-	  });
-	  console.log('Searching!');
-	  socket.emit('taskQuery', {'search': document.forms['taskSearch']['searchBox'].value});
-	  socket.on('taskQueryRes', function(data){
-	    refreshTaskList(data.tasks, user);
-	  });
-	 }
-	 
-	 function refreshTaskList(taskList, user){
-	 document.write('<!DOCTYPE html> <html> <head> <script src="/socket.io/socket.io.js"></script> </head> <body> <div id="searchResults">');
-	 document.write('<h1>Search Results</h1>');
-	 if(taskList.length === 0){
-	   document.write('<p>No tasks found...</p>');
-	 }
-	 else{
-	   for(i = 0; i < taskList.length; i++){
-	     console.log('Displaying task...');
-	     renderTask(taskList[i], user);
-	   }
-	 }
-	 document.write('<a href="/taskSelect">Back...</a>');
-	 document.write('<script>' + 'var socket = io(); ' + requestTask.toString() +'</script>');
-	 document.write('</div> </body> </html>');
-	 
-	}
-	
-	
-	function requestTask(taskID, user){
-	  socket.emit('reqTask', {'task': taskID, 'user': user});
-	  socket.on('feedback', function(data){
-	    console.log(data.message);
-	  });
-	  
-	}
-	</script>
+    <script src="search.js"></script>
   </head>
   <body>
     <h1 class="text">Select Task...</h1>
 	  <a href="/dashboard">Back to Dashboard...</a>
 	  <form id="taskSearch">
 	    <input id="searchBox">
-		<button id="submit" onclick="searchTasks()" class="text">Search</button>
+		<button id="submit" onclick="searchTasks()" class="text button">Search</button>
 	  </form>
 	  <h3 class="text">Here, you can select and add any task you wish to complete to your account. You may only have four tasks active at a time, so choose wisely!</h3>
-	  <script>
-	    function renderTask(task, user){
-		  if(!isTaskSelected(task, user)){
-		    document.write('<h2 class="searchResult">' + task.title + '</h2>');
-		    document.write('<button class="taskButton" onclick="requestTask(' + task._id + ',' + user._id + ')">Add Task</button>');
-		    document.write(task.val + ' pts');
-		    document.write('</br>');
-		   }
-		}
-		
-		 function isTaskSelected(task, user){
-		 /*  for(i = 0; i < user.tasks.length; i++){
-		    if(task._id === user.tasks[i]._id)
-			  return true;
-		   } */
-		   console.log('Adding task to search results');
-		   return false;
-		 }
-	  </script>
-	
   </body>
 </html>

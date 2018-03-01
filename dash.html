@@ -4,59 +4,11 @@
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <title>Dashboard</title>
-	<style>
-  #signup{
-    margin: auto;
-}
-
-
-  .text{
-    color: white;
-    font-family: Helvetica;
-    background-color: #03c03c;
-    text-decoration: none;
-}
-
-#pointTest{
-    background-color: #53d179;
-	border-color: #53d179;
-    width: 100px;
-    height: 30px;
-    font-size: 20px;
-    text-align: center;
-	margin: auto;
-	
-}
-
-body{
-    background-color: #03c03c;
-}
-  </style>
+	<link href="dash.css" rel="stylesheet" type="text/css">
     <script src="/socket.io/socket.io.js"></script>
+	<script src="dash.js"></script>
 	<script>
-	var socket = io();
-	
-	  function testPoints(){
-	    console.log('Doing stuff...');
-	    socket.emit('ptsTest', {'points': 1});
-		refreshUserData();
-	   }
-	  
-	  function refreshUserData(){
-	   socket.emit('userQuery', {'username': 'testUser'});
-	   socket.on('getUser', function(data){
-	     document.getElementById('points').innerHTML = ('Points: ' + data.pts);
-	   });
-	  }
-	  
-	  function execTask(id){
-	  socket.emit('completeTask', {'taskID': id});
-	  refreshUserData();
-	  }
-	  
-	 refreshUserData();
-	   
-	  
+	refreshUserData();
 	</script>
    </head>
    <body>
