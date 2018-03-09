@@ -12,6 +12,7 @@ var assert = require('assert');
 console.log('C');
 var mongoUrl = "mongodb://localhost:27017/users";
 var bcrypt = require('bcrypt');
+var ejs = require('ejs');
 //var db = require('./config/db');
 //var Server = require("mongo-sync").Server;
 //var mServer = new Server('localhost:27017');
@@ -150,6 +151,10 @@ app.get('/dashboard', function(req, res){
   res.sendFile(__dirname + '/dash.html');
 });
 
+app.get('/suggtask', function(req, res){
+  res.sendFile(__dirname + '/suggTask.html');
+});
+
 app.get('/addtask', function(req, res){
   res.sendFile(__dirname + '/addTask.html');
 });
@@ -163,6 +168,25 @@ console.log("Adding points...");
 addPoints(1, 'testUser');
 res.sendFile(__dirname + '/dash.html');
 });
+
+app.get('search/:query', function(req, res){
+  var searchQuery = req.params.query;
+  var tasks;
+  var html;
+  console.log('Searching task database...');
+	    if(req.params.query === ''){
+	      searchQuery ='UNDEFINED SEARCH QUERY';
+	    }
+	    findTasks(searchQuery, function(result){
+	      for(i = 0; i < res.length; i++){
+		    console.log(res[i]);
+			html = ejs.render(fs.readFileSync(__dirname + '/search.ejs'), {tasks = result});
+			res.sendFile(html);
+		  }
+		  });
+		  
+		  
+	    });
 
 //app.post('/signup', function(req, res){
   //if (!req.body) return res.sendStatus(400)

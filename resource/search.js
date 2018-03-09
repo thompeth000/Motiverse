@@ -30,8 +30,10 @@ var socket = io();
 	     renderTask(taskList[i], user);
 	   }
 	 }
-	 document.write('<a href="/taskSelect">Back...</a>');
+	 document.write('<script src="search.js"></script>');
 	 document.write('</body>');
+	 document.write('<a href="/taskSelect">Back...</a>');
+
 	 //document.write('</div> </body> </html>');
 	 
 	}
@@ -47,7 +49,7 @@ var socket = io();
 	function renderTask(task, user){
 		  if(!isTaskSelected(task, user)){
 		    document.write('<h2 class="searchResult text">' + task.title + '</h2>');
-		    document.write('<button class="button text" onclick="requestTask(' + task._id + ',' + user._id + ')">Add Task</button>');
+		    document.write('<button class="button text" onclick="displayTaskOptions(' + task._id + ',' + user._id + ')">Add Task</button>');
 		    document.write('<p class="text">' + task.val + ' pts</p>');
 		    document.write('</br>');
 		   }
@@ -61,4 +63,9 @@ var socket = io();
 		   console.log('Adding task to search results');
 		   return false;
 		 }
+		 
+    function displayTaskOptions(taskID){
+	  console.log(taskID);
+	  
+	}
 	  

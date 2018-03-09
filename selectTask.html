@@ -4,15 +4,18 @@
   <head>
     <link href="search.css" rel="stylesheet" type="text/css">
     <script src="/socket.io/socket.io.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
     <script src="search.js"></script>
   </head>
   <body>
-    <h1 class="text">Select Task...</h1>
+    <div ng-app="taskSelect">
+      <h1 class="text">Select Task...</h1>
 	  <a href="/dashboard">Back to Dashboard...</a>
 	  <form id="taskSearch">
 	    <input id="searchBox">
 		<button id="submit" onclick="searchTasks()" class="text button">Search</button>
 	  </form>
 	  <h3 class="text">Here, you can select and add any task you wish to complete to your account. You may only have four tasks active at a time, so choose wisely!</h3>
+	 </div>
   </body>
 </html>

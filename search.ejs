@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <link href="search.css" rel="stylesheet" type="text/css">
+    <script src="/socket.io/socket.io.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <script src="search.js"></script>
+  </head>
+  <body>
+    <h1 class="text">Search Results</h1>
+	<div id="results">
+	  <%if (tasks.length === 0){%>
+	    <p>No tasks found...</p>
+      <%}%>
+	  <%else{
+	    for(var i = 0; i < tasks.length; i++){%>
+		 <h2 class="searchResult text"><%=tasks[i].title %></h2>
+		 <button class="button text" onclick="displayTaskOptions(' + <%=tasks[i]._id %> + ',' + user._id + ')">Add Task</button>
+		 <p class="text"><%=tasks[i].val %> pts</p>
+		 </br>
+	  <%} }%>
+	</div>
+	<a href="/taskSelect">Back...</a>
+  </body>
