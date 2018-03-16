@@ -2,7 +2,33 @@
 
 <html>
   <head>
-    <link href="search.css" rel="stylesheet" type="text/css">
+    <style>
+	  #signup{
+      margin: auto;
+      }
+
+
+      .text{
+      color: white;
+      font-family: Helvetica;
+      background-color: #03c03c;
+      text-decoration: none;
+      }
+
+      .button{
+      background-color: #53d179;
+	  border-color: #53d179;
+      width: 100px;
+      height: 30px;
+      font-size: 20px;
+      text-align: center;
+	  margin: auto;
+     }
+
+     body{
+     background-color: #03c03c;
+     }
+	</style>
     <script src="/socket.io/socket.io.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
     <script src="search.js"></script>
@@ -10,14 +36,12 @@
   <body>
     <h1 class="text">Search Results</h1>
 	<div id="results">
-	  <%if (tasks.length === 0){%>
+	  <%if (taskList.length === 0) {%>
 	    <p>No tasks found...</p>
-      <%}%>
-	  <%else{
-	    for(var i = 0; i < tasks.length; i++){%>
-		 <h2 class="searchResult text"><%=tasks[i].title %></h2>
-		 <button class="button text" onclick="displayTaskOptions(' + <%=tasks[i]._id %> + ',' + user._id + ')">Add Task</button>
-		 <p class="text"><%=tasks[i].val %> pts</p>
+      <%} else { for(var i = 0; i < taskList.length; i++){%>
+		 <h2 class="searchResult text"><%=taskList[i].title %></h2>
+		 <button class="button text" onclick="displayTaskOptions(' + <%=taskList[i]._id %> + ',' + user._id + ')">Add Task</button>
+		 <p class="text"><%=taskList[i].val %> pts</p>
 		 </br>
 	  <%} }%>
 	</div>

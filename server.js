@@ -13,6 +13,7 @@ console.log('C');
 var mongoUrl = "mongodb://localhost:27017/users";
 var bcrypt = require('bcrypt');
 var ejs = require('ejs');
+var fs = require('fs');
 //var db = require('./config/db');
 //var Server = require("mongo-sync").Server;
 //var mServer = new Server('localhost:27017');
@@ -169,20 +170,22 @@ addPoints(1, 'testUser');
 res.sendFile(__dirname + '/dash.html');
 });
 
-app.get('search/:query', function(req, res){
+app.get('/search/:query', function(req, res){
   var searchQuery = req.params.query;
   var tasks;
   var html;
   console.log('Searching task database...');
+  console.log(searchQuery);
 	    if(req.params.query === ''){
 	      searchQuery ='UNDEFINED SEARCH QUERY';
 	    }
 	    findTasks(searchQuery, function(result){
-	      for(i = 0; i < res.length; i++){
-		    console.log(res[i]);
-			html = ejs.render(fs.readFileSync(__dirname + '/search.ejs'), {tasks = result});
-			res.sendFile(html);
+		console.log('Tasks found!');
+	      for(i = 0; i < result.length; i++){
+		    console.log(result[i]);
 		  }
+		  html = ejs.render(fs.readFileSync(__dirname + '/search.ejs', 'utf-8'), {taskList: result});
+	      res.send(html);
 		  });
 		  
 		  

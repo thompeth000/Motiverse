@@ -2,15 +2,17 @@ var socket = io();
 	var tasks = new Array();
 	function searchTasks(){
 	  var user;
+	  var q = document.forms['taskSearch']['searchBox'].value;
 	  socket.emit('userQuery', {'username': 'testUser'});
 	  socket.on('getUser', function(data){
 	    user = data;
 	  });
-	  console.log('Searching!');
-	  socket.emit('taskQuery', {'search': document.forms['taskSearch']['searchBox'].value});
-	  socket.on('taskQueryRes', function(data){
-	    refreshTaskList(data.tasks, user);
-	  });
+	  //console.log('Searching!');
+	  //window.location.assign('/search/:' + q);
+	  //socket.emit('taskQuery', {'search': document.forms['taskSearch']['searchBox'].value});
+	  //socket.on('taskQueryRes', function(data){
+	  //  refreshTaskList(data.tasks, user);
+	  //});
 	 }
 	 
 	 function refreshTaskList(taskList, user){
