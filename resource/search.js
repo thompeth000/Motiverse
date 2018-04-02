@@ -1,19 +1,18 @@
 var socket = io();
 	var tasks = new Array();
-	function searchTasks(){
-	  var user;
-	  var q = document.forms['taskSearch']['searchBox'].value;
-	  socket.emit('userQuery', {'username': 'testUser'});
-	  socket.on('getUser', function(data){
-	    user = data;
-	  });
-	  //console.log('Searching!');
-	  //window.location.assign('/search/:' + q);
-	  //socket.emit('taskQuery', {'search': document.forms['taskSearch']['searchBox'].value});
-	  //socket.on('taskQueryRes', function(data){
-	  //  refreshTaskList(data.tasks, user);
-	  //});
-	 }
+	
+	window.onload = function(){
+  document.getElementById("submitButton").onclick = function(){
+    window.location.assign(search(document.forms['taskSearch']['searchBox'].value));
+	return false;
+  }
+}
+	function search(searchQ){
+	  console.log(searchQ);
+	  return ('localhost:3000/search/' + searchQ); 
+	}
+	
+	
 	 
 	 function refreshTaskList(taskList, user){
 	 document.write('<!DOCTYPE html>');
