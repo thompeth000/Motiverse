@@ -2,14 +2,14 @@ var socket = io();
 	var tasks = new Array();
 	
 	window.onload = function(){
-  document.getElementById("submitButton").onclick = function(){
-    window.location.assign(search(document.forms['taskSearch']['searchBox'].value));
-	return false;
+    document.getElementById("submitButton").onclick = function(){
+      window.open(search(document.forms['taskSearch']['searchBox'].value), "_self");
+	  return false;
   }
 }
 	function search(searchQ){
 	  console.log(searchQ);
-	  return ('localhost:3000/search/' + searchQ); 
+	  return ('/search/' + searchQ); 
 	}
 	
 	

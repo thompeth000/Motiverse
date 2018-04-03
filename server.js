@@ -188,10 +188,19 @@ app.get('/search/:query', function(req, res){
 		  }
 		  html = ejs.render(fs.readFileSync(__dirname + '/search.ejs', 'utf-8'), {taskList: result});
 	      res.send(html);
-		  });
-		  
-		  
+		  });  
 	    });
+		
+app.get('/tasks/:taskID', function(req, res){
+  findTask(req.params.taskID, function(result){
+    if !(result === "undefined"){
+	  html = ejs.render(fs.readFileSync(__dirname + '/taskOptions.html', 'utf-8'), {task: result});
+	  res.send(html);
+	}
+	else
+	  res.sendFile(__dirname + '/taskNotFound.html');
+  });
+});
 
 //app.post('/signup', function(req, res){
   //if (!req.body) return res.sendStatus(400)

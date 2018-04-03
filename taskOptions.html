@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <script src="/socket.io/socket.io.js"></script>
+  </head>
+  <body>
+    <h1>Configure Task...</h1>
+	</br>
+	<h2>Task name: </h2>
+	<h2>PLACEHOLDER </h2>
+	<h2>Point value: </h2>
+	<h2>PLACEHOLDER </h2>
+	<form id="options">
+	  <button id="back" onclick="window.history.back();">Cancel</button>
+	  <button id="ok" onclick="confirmTask( + <%=task.id%>);">Add Task</button>
+	</form>
+  </body>
+</html>

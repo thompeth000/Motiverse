@@ -31,7 +31,7 @@
 	</style>
     <script src="/socket.io/socket.io.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
-    <script src="search.js"></script>
+    <script src="searchEngine.js"></script>
   </head>
   <body>
     <h1 class="text">Search Results</h1>
@@ -40,7 +40,7 @@
 	    <p>No tasks found...</p>
       <%} else { for(var i = 0; i < taskList.length; i++){%>
 		 <h2 class="searchResult text"><%=taskList[i].title %></h2>
-		 <button class="button text" onclick="displayTaskOptions(' + <%=taskList[i]._id %> + ',' + user._id + ')">Add Task</button>
+		 <button class="button text" onclick="displayTaskOptions(' + <%=taskList[i]._id %> + ')">Add Task</button>
 		 <p class="text"><%=taskList[i].val %> pts</p>
 		 </br>
 	  <%} }%>
