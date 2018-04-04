@@ -140,8 +140,8 @@ var addUser = function(user, passHash, mail){
 //var serviceAccount = require("/motiverse-4490e-firebase-adminsdk-3zmsk-3c22d3d7ec.json");
 
 
-
 app.use(express.static('resource'));
+
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });
@@ -193,12 +193,14 @@ app.get('/search/:query', function(req, res){
 		
 app.get('/tasks/:taskID', function(req, res){
   findTask(req.params.taskID, function(result){
-    if !(result === "undefined"){
-	  html = ejs.render(fs.readFileSync(__dirname + '/taskOptions.html', 'utf-8'), {task: result});
-	  res.send(html);
-	}
-	else
+    if (result == "undefined"){
 	  res.sendFile(__dirname + '/taskNotFound.html');
+	}
+	else{
+	html = ejs.render(fs.readFileSync(__dirname + '/taskOptions.html', 'utf-8'), {task: result});
+	res.send(html);
+	}
+	  
   });
 });
 
