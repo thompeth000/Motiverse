@@ -192,8 +192,9 @@ app.get('/search/:query', function(req, res){
 	    });
 		
 app.get('/tasks/:taskID', function(req, res){
+  console.log('TASK ID: ' + req.params.taskID);
   findTask(req.params.taskID, function(result){
-    if (result == "undefined"){
+    if (result == null){
 	  res.sendFile(__dirname + '/taskNotFound.html');
 	}
 	else{
@@ -233,7 +234,7 @@ function findTasks(s, callback){
 }
 
 function findTask(taskID, callback){
-  MotiverseTask.findOne({id_: taskID}, function(err, q){
+  MotiverseTask.findById(taskID, function(err, q){
     callback(q);
   });
 }

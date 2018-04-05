@@ -3,17 +3,18 @@
 <html>
   <head>
     <script src="/socket.io/socket.io.js"></script>
+	<link href="/searchEngine.css" rel="stylesheet" type="text/css">
   </head>
   <body>
-    <h1>Configure Task...</h1>
+    <h1 class="text">Configure Task...</h1>
 	</br>
-	<h2>Task name: </h2>
-	<h2>PLACEHOLDER </h2>
-	<h2>Point value: </h2>
-	<h2>PLACEHOLDER </h2>
+	<h2 class="text">Task name: </h2>
+	<h2 class="text"><%=task.title%></h2>
+	<h2 class="text">Point value: </h2>
+	<h2 class="text"><%=task.val%></h2>
 	<form id="options">
-	  <button id="back" onclick="window.history.back();">Cancel</button>
-	  <button id="ok" onclick="confirmTask(' + <%=task._id%> + ');">Add Task</button>
+	  <button class="text button" id="back" onclick="window.open('/taskSelect', '_self'); return false;">Cancel</button>
+	  <button class="text button" id="ok" onclick="confirmTask('<%=task._id%>');">Add Task</button>
 	</form>
   </body>
 </html>
