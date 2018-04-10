@@ -96,6 +96,12 @@ var message;
 	   console.log('Adding task...');
        res.tasks[res.taskCount] = task;
        res.taskCount++;
+	   res.save(function(error, user, num){
+	     if(err){
+		   console.log(num);
+		 }
+	   });
+	   console.log('NANI?!');
        message = 'Name: ' + task.title + ' Task count for user: ' + res.taskCount;
      }
      else{
