@@ -85,28 +85,26 @@ var newTask = new MotiverseTask({title: data.title, val: data.val});
   callback(newTask);
 }
 
-function addTaskToUser(taskID, userID, callback){
-var task;
+function addTaskToUser(task, callback){
 var message;
-findTask(taskID, function(res){
-    task = res;
-	console.log('found task!');
-	console.log(task);
-});
   if(!(typeof task === 'undefined')){
-    MotiverseUser.findOne({name: 'test'}, function(err, res){
-     if(res.taskCount < 4){
-       res.tasks.add(task);
+    MotiverseUser.findOne({name: 'dankMemes'}, function(err, res){
+	 console.log('Task: ' + task);
+	 console.log('User: ' + res);
+	 console.log('Task count: ' + res.taskCount);
+     if(res.taskCount < 3){
+	   console.log('Adding task...');
+       res.tasks[res.taskCount] = task;
        res.taskCount++;
-       message = 'Task added successfully!';
+       message = 'Name: ' + task.title + ' Task count for user: ' + res.taskCount;
      }
      else{
-       message = 'You have too many tasks. Try completing or removing one to add ' + task.name + '.';
+       message = 'You have too many tasks. Try completing or removing one to add ' + task.title + '.';
      }
     });
   }
   else{
-    message = 'Invalid task ID!';
+    message = 'Invalid task!';
   }
   callback(message);
 }
@@ -115,7 +113,7 @@ function getUserID(token){
 }
 
 var addUser = function(user, passHash, mail){
-  var newUser = new MotiverseUser({name: 'testUser', email: mail, passwordHash: passHash, score: 0, uid: 0});
+  var newUser = new MotiverseUser({name: 'dankMemes', email: mail, passwordHash: passHash, score: 0, uid: 0, taskCount: 0});
   newUser.save(function(err){
     if(err)
       return handleError(err);
@@ -233,6 +231,8 @@ function findTasks(s, callback){
   });
 }
 
+
+
 function findTask(taskID, callback){
   MotiverseTask.findById(taskID, function(err, q){
     callback(q);
@@ -278,6 +278,15 @@ io.on('connection', function(socket){
 		console.log('Added Task!: ' + res);
 		});
 	  });
+	  
+	  socket.on('addTask', function(data){
+	    findTask(data.taskID, function(result){
+		  console.log('Task: ' + result);
+	      addTaskToUser(result, function(res){
+            console.log('Task added: ' + res);		
+	     });
+	   });
+	 });
 	  
 	socket.on('taskQuery', function(searchQuery){
 	  console.log('Searching task database...');

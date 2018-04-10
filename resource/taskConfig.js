@@ -5,6 +5,6 @@ window.onload = function(){
 }
 
 function confirmTask(id){
-socket.emit('addTask', {'taskID': id, });
-window.open('/dash', '_self');
+socket.emit('addTask', {'taskID': id});
+window.open('/dashboard', '_self');
 }
