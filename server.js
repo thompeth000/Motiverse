@@ -85,6 +85,19 @@ var newTask = new MotiverseTask({title: data.title, val: data.val});
   callback(newTask);
 }
 
+function dummyClearTasks(){
+  MotiverseUser.findOne({name: 'dankMemes'}, function(err, res){
+    res.tasks = [];
+	res.taskCount = 0;
+	res.save(function(error, user, num){
+	     console.log(num);
+		 if(err){
+		   console.log(num);
+		 }
+	   });
+  });
+}
+
 function addTaskToUser(task, callback){
 var message;
   if(!(typeof task === 'undefined')){
@@ -92,27 +105,34 @@ var message;
 	 console.log('Task: ' + task);
 	 console.log('User: ' + res);
 	 console.log('Task count: ' + res.taskCount);
-     if(res.taskCount < 3){
+	 console.log('Tasks: ' + res.tasks);
+     if(res.taskCount < 4){
 	   console.log('Adding task...');
-       res.tasks[res.taskCount] = task;
-       res.taskCount++;
+       res['tasks'][res.taskCount] = task;
+       res.taskCount = res.taskCount + 1;
+	   res.markModified('tasks');
 	   res.save(function(error, user, num){
-	     if(err){
+	     console.log(num);
+		 if(err){
 		   console.log(num);
 		 }
 	   });
 	   console.log('NANI?!');
-       message = 'Name: ' + task.title + ' Task count for user: ' + res.taskCount;
+       message = 'Task added successfully!';
+	   console.log('OMAE WA MOU SHINDEIRU!');
+	   callback(message);
      }
      else{
        message = 'You have too many tasks. Try completing or removing one to add ' + task.title + '.';
+	   callback(message);
      }
     });
   }
   else{
     message = 'Invalid task!';
+	callback(message);
   }
-  callback(message);
+  
 }
 
 function getUserID(token){
@@ -148,6 +168,11 @@ app.use(express.static('resource'));
 
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
+});
+
+app.get('/clear', function(req, res){
+dummyClearTasks();
+res.sendFile(__dirname + '/dash.html');
 });
 
 app.get('/signup', function(req, res){
@@ -289,7 +314,7 @@ io.on('connection', function(socket){
 	    findTask(data.taskID, function(result){
 		  console.log('Task: ' + result);
 	      addTaskToUser(result, function(res){
-            console.log('Task added: ' + res);		
+            console.log(res);		
 	     });
 	   });
 	 });

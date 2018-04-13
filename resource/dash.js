@@ -7,7 +7,7 @@ function testPoints(){
 }
 	  
 function refreshUserData(){
- socket.emit('userQuery', {'username': 'testUser'});
+ socket.emit('userQuery', {'username': 'dankMemes'});
  socket.on('getUser', function(data){
  document.getElementById('points').innerHTML = ('Points: ' + data.pts);
  document.getElementById('task1').innerHTML = ('Task 1: ' + data.tasks[1]);
