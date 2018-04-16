@@ -12,7 +12,11 @@
 	<h2 class="text">Task name: <%=task.title%> </h2>
 	<h2 class="text">Point value: <%=task.val%> </h2>
 	<form id="options">
-	  <input type="checkbox" name="repeating" value="Repeating task" class="text" id="isRepeating">Repeating task?</input>
+	  <input type="checkbox" name="repeating" onClick="toggleRepeating()" value="off" class="text" id="isRepeating">Repeating task?</input>
+	  </br>
+	  <p class="text" id="freqText">Task frequency in days</p>
+	  <input name="freq" value="7" id="taskFreq"></input>
+	  </br>
 	  </br>
 	  <input type="date" name="due" value="Due date" id="dueDate"></input>
 	  </br>

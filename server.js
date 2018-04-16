@@ -27,7 +27,9 @@ var motiverseTask = new Schema({
 title: String,
 val: Number,
 due: Date,
-taskID: Number
+taskID: Number,
+repeating: Boolean,
+taskFreq: Number
 });
 //var jsonParser = bodyParser.json()
 //var urlencodedParser = bodyParser.urlencoded({ extended: false })
@@ -270,6 +272,26 @@ function findTask(taskID, callback){
   });
 }
 
+//UNFINISHED!
+function completeTask(data, callback){
+  MotiverseUser.findOne({name: 'dankMemes'}, function(err, res){
+       addPoints(res['tasks'][data.id], res.username, function(result){
+	   
+	   });
+       res.taskCount = res.taskCount - 1;
+	   for(var i = data.id + 1; i <= res.taskCount; i++){
+	     res.tasks[i - 1] = res.tasks[i];
+	   }
+	   res.tasks[taskCount] = null;
+	   res.markModified('tasks');
+	   res.save(function(error, user, num){
+	     console.log(num);
+		 if(err){
+		   console.log(num);
+		 
+	   });
+}
+
 
 io.on('connection', function(socket){
   
@@ -294,7 +316,7 @@ io.on('connection', function(socket){
   
     socket.on('ptsTest', function(test){ 
 	   console.log("Doing points and stuff");
-       addPoints(1, 'testUser', function(res){
+       addPoints(1, 'dankMemes', function(res){
 	 });
     });
 	 
@@ -307,6 +329,12 @@ io.on('connection', function(socket){
 	  socket.on('newTask', function(data){
 	    newTask(data, function(res){
 		console.log('Added Task!: ' + res);
+		});
+	  });
+	  
+	  socket.on('completeTask', function(data){
+	    completeTask(data, function(res){
+		  console.log(res);
 		});
 	  });
 	  
