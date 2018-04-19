@@ -275,21 +275,24 @@ function findTask(taskID, callback){
 //UNFINISHED!
 function completeTask(data, callback){
   MotiverseUser.findOne({name: 'dankMemes'}, function(err, res){
-       addPoints(res['tasks'][data.id], res.username, function(result){
+       console.log('Task: ' + res.tasks[data.taskId]);
+	   console.log(data.taskId);
+       addPoints(res.tasks[data.taskId].val, res.name, function(result){
 	   
 	   });
        res.taskCount = res.taskCount - 1;
 	   for(var i = data.id + 1; i <= res.taskCount; i++){
 	     res.tasks[i - 1] = res.tasks[i];
 	   }
-	   res.tasks[taskCount] = null;
+	   res.tasks[res.taskCount] = null;
 	   res.markModified('tasks');
 	   res.save(function(error, user, num){
 	     console.log(num);
 		 if(err){
 		   console.log(num);
-		 
+		 }
 	   });
+   });
 }
 
 

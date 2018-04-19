@@ -17,7 +17,7 @@ function refreshUserData(){
 }
 	  
 function execTask(id){
- socket.emit('completeTask', {'taskID': id});
- refreshUserData();
+ socket.emit('completeTask', {'taskId': id});
+ location.reload();
  }
 	  
