@@ -181,9 +181,7 @@ app.get('/signup', function(req, res){
   res.sendFile(__dirname + '/signup.html');
 });
 
-app.get('/dashboard', function(req, res){
-  res.sendFile(__dirname + '/dash.html');
-});
+
 
 app.get('/suggtask', function(req, res){
   res.sendFile(__dirname + '/suggTask.html');
@@ -201,6 +199,11 @@ app.post('/dashboard', function(req, res){
 console.log("Adding points...");
 addPoints(1, 'testUser');
 res.sendFile(__dirname + '/dash.html');
+});
+
+app.get('/dashboard', function(req, res){
+  var taskText;
+  console.log('Preparing dashboard...');
 });
 
 app.get('/search/:query', function(req, res){
@@ -275,16 +278,14 @@ function findTask(taskID, callback){
 //UNFINISHED!
 function completeTask(data, callback){
   MotiverseUser.findOne({name: 'dankMemes'}, function(err, res){
+    if(data.taskId < res.taskCount){
        console.log('Task: ' + res.tasks[data.taskId]);
 	   console.log(data.taskId);
        addPoints(res.tasks[data.taskId].val, res.name, function(result){
 	   
 	   });
-       res.taskCount = res.taskCount - 1;
-	   for(var i = data.id + 1; i <= res.taskCount; i++){
-	     res.tasks[i - 1] = res.tasks[i];
-	   }
-	   res.tasks[res.taskCount] = null;
+	   res.tasks.splice(data.taskId, 1);
+	   res.taskCount--;
 	   res.markModified('tasks');
 	   res.save(function(error, user, num){
 	     console.log(num);
@@ -292,6 +293,10 @@ function completeTask(data, callback){
 		   console.log(num);
 		 }
 	   });
+	}
+	else{
+	  console.log('Invalid request!');
+	}
    });
 }
 
