@@ -204,6 +204,7 @@ res.sendFile(__dirname + '/dash.html');
 app.get('/dashboard', function(req, res){
   var taskText;
   console.log('Preparing dashboard...');
+  
 });
 
 app.get('/search/:query', function(req, res){
