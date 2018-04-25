@@ -26,7 +26,7 @@ mongoose.connect(mongoUrl);
 var motiverseTask = new Schema({
 title: String,
 val: Number,
-due: Date,
+due: Number,
 taskID: Number,
 repeating: Boolean,
 taskFreq: Number
@@ -140,6 +140,7 @@ var message;
 function getUserID(token){
 }
 
+
 var addUser = function(user, passHash, mail){
   var newUser = new MotiverseUser({name: 'dankMemes', email: mail, passwordHash: passHash, score: 0, uid: 0, taskCount: 0});
   newUser.save(function(err){
@@ -202,9 +203,32 @@ res.sendFile(__dirname + '/dash.html');
 });
 
 app.get('/dashboard', function(req, res){
-  var taskText;
+  var taskText = ['None','None','None','None'];
+  var points;
   console.log('Preparing dashboard...');
-  
+  MotiverseUser.findOne({name: 'dankMemes'}, function(err, data){
+    points = data.score;
+    console.log(res);
+	for(var i = 0; i < 4; i++){
+	if(data.tasks[i] != undefined && data.tasks[i].due < Date.now()){
+	    data.tasks.splice(i);
+	    i--;
+	    data.taskCount--;
+	  }
+	}
+    for(var i = 0; i < data.taskCount; i++){
+	  taskText[i] = data.tasks[i].title + ': ' + data.tasks[i].val + ' pts';
+	}
+	data.save(function(error, res, num){
+	     console.log(num);
+		 if(err){
+		   console.log(num);
+		 }
+      html = ejs.render(fs.readFileSync(__dirname + '/dash.html', 'utf-8'), {taskText: taskText, points: points});
+	  res.send(html);		 
+	}
+    
+  });
 });
 
 app.get('/search/:query', function(req, res){
@@ -350,6 +374,7 @@ io.on('connection', function(socket){
 	  socket.on('addTask', function(data){
 	    findTask(data.taskID, function(result){
 		  console.log('Task: ' + result);
+		  result.due = data.dueDate;
 	      addTaskToUser(result, function(res){
             console.log(res);		
 	     });
