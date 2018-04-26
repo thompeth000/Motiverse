@@ -6,7 +6,7 @@ window.onload = function(){
 function confirmTask(id){
 due = Date.parse(document.getElementById('dueDate').value) + 86400000;
 socket.emit('addTask', {'taskID': id, 'dueDate': due});
-setTimeout(openDash, 300);
+setTimeout(openDash, 400);
 }
 
 function openDash(){

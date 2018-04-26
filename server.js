@@ -208,7 +208,7 @@ app.get('/dashboard', function(req, res){
   console.log('Preparing dashboard...');
   MotiverseUser.findOne({name: 'dankMemes'}, function(err, data){
     points = data.score;
-    console.log(res);
+    console.log(data);
 	for(var i = 0; i < 4; i++){
 	if(data.tasks[i] != undefined && data.tasks[i].due < Date.now()){
 	    data.tasks.splice(i);
@@ -217,16 +217,21 @@ app.get('/dashboard', function(req, res){
 	  }
 	}
     for(var i = 0; i < data.taskCount; i++){
-	  taskText[i] = data.tasks[i].title + ': ' + data.tasks[i].val + ' pts';
+	  var dueText;
+	  var days = Math.floor((data.tasks[i].due - Date.now()) / 86400000);
+	  if(days === 0){
+	    dueText = 'today!'
+	  }
+	  else{
+	    dueText = 'in ' + days + ' days';
+	  }
+	  taskText[i] = data.tasks[i].title + ': ' + data.tasks[i].val + ' pts, Due ' + dueText;
 	}
-	data.save(function(error, res, num){
-	     console.log(num);
-		 if(err){
-		   console.log(num);
-		 }
+	data.save(function(error, result, num){
+	  console.log(num);
       html = ejs.render(fs.readFileSync(__dirname + '/dash.html', 'utf-8'), {taskText: taskText, points: points});
 	  res.send(html);		 
-	}
+	});
     
   });
 });

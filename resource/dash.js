@@ -18,6 +18,6 @@ function refreshUserData(){
 	  
 function execTask(id){
  socket.emit('completeTask', {'taskId': id});
- location.reload();
+ setTimeout(location.reload() , 500);
  }
 	  
