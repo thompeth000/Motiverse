@@ -307,8 +307,10 @@ function findTask(taskID, callback){
 
 //UNFINISHED!
 function completeTask(data, callback){
+  var resString;
   MotiverseUser.findOne({name: 'dankMemes'}, function(err, res){
     if(data.taskId < res.taskCount){
+	  if(res.tasks[data.taskId].due - Date.now() < 86400){
        console.log('Task: ' + res.tasks[data.taskId]);
 	   console.log(data.taskId);
        addPoints(res.tasks[data.taskId].val, res.name, function(result){
@@ -323,6 +325,12 @@ function completeTask(data, callback){
 		   console.log(num);
 		 }
 	   });
+	   resString = 'Success! You now have ' + res.score + ' points!';
+	  }
+	  else{
+	    resString = 'You may only complete a task on its due date';
+	  }
+	  callback(resString);
 	}
 	else{
 	  console.log('Invalid request!');
@@ -372,7 +380,7 @@ io.on('connection', function(socket){
 	  
 	  socket.on('completeTask', function(data){
 	    completeTask(data, function(res){
-		  console.log(res);
+		  console.log('Browser message: ' + res);
 		});
 	  });
 	  
